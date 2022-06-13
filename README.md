@@ -1,13 +1,6 @@
-# Unity - UGUI(Unity Graphic User Interface)
-##  Toy Projects
-  - 01. Drag and Drop with Duplication
-  - 02. Iventory & Slot
-  - 03. Swipe
-  - 04. FileBrowser - Image Update / Save
+## Unity UI
 
-
-## UGUI(Unity Graphic User Interface)
-
+# UGUI(Unity Graphic User Interface)
 - Unity에서 제공하는 Unity built - in UI (4.6 이후)
 - 추가 구매의 필요성이 없으며, 직관적인 UI 구성 요소 간의 Depth 조절이 가능.
 - Canvas 단위로 Draqw cell이 관리되며, Sprite Atlas 관리(Folder 단위로도 가능)
@@ -81,3 +74,109 @@
 
 ### Graphic Raycater
 - Canvas 오브젝트 하위에 배치된 UI 요소들에 광선을 쏴서 충돌처리를 함.
+
+
+
+### TextMeshPro - Text
+- 화면에 text를 표현하는 UI Component.
+- Text rendering pipline으로 SDF(Singled Distance Field)를 이용.(Point 크기나 해상도 변화에도 Text를 깨끗하게 렌더링 함.)
+- 최적화가 잘되어 있으며, 커스터마이징 및 다양한 텍스트 효과를 가짐.
+    - `Button`, `InputField`, `DropDown`과 같이 화면에 Text를 표현하는 모든 UI는 `TextMeshPro - Text` Component를 가짐.
+    - `Text` Component는 Lagacy로 곧 사용이 중지될 예정이므로, Text를 포함하는 다른 UI도 `TextMeshPro`가 붙은 것으로 대체하여 사용.
+    - **참고** : 현재 `Toggle` 오브젝트만 `TextMeshPro - Text`가 아닌 `Text` 이용.
+
+    - TextMeshPro - Text Componet
+        - Text Input Box : 화면에 출력될 Text를 타이핑하는 공간, 여러 줄 입력시 Enter로 줄 바꿈 가능. 서식 있는 Text(Rich Text)
+        - Text Style : Text Size, Color 등이 적용된 Text Style.
+
+        - `[Main Settings]`
+            - Font Asset : Text Rendering에 사용되는 Font Asset.
+            - Material Preset : Text에 적용되는 Material(Shader : 색의 농담, 색조, 명암 효과를 주는 주체)
+            - Font Style : Text에 굵게, 기울기 등의 효과 적용.
+            - Font Size : Text 크기.
+            - Auto Size : RectTransform과 Text 길이를 고려하여 동적으로 Font 크기 변화.
+            - Vertex Color : Font 색상.
+            - Color Gradient : 색상 그라데이션 설정.
+            - Spacing Options : 문자, 문장, 줄 간격 등 조절.
+            - Alignment : Text 정렬.
+
+        
+        - `[Extra Settings]`
+            - Margins : 외곽 영역 간격 조절.
+            - Rich Text : 서식 있는 Text 사용 여부.
+            - Raycast Target : 상호작용 여부.
+            - Sprite Asset : 특정 Text 명령을 입력하면, Text 대신하여 Image 출력.
+            - Style Sheet Asset : 여러 스타일을 미리 지정해서 등록해두고, 서식 있는 Text처럼 <style="TEST">[Text Content]</style>과 같이 사용이 가능.
+
+
+```c#
+using UnityEngine;
+// TextMeshPro에서 제공하는 class를 이용.
+using TMPro; 
+
+public class TMPStudy : MonoBehaviour
+{
+    private TextMeshProUGUI textComponet;
+
+    private void Awake()
+    {
+        textComponet = GetComponent<TextMeshProUGUI>();
+
+        textComponet.text      = "This Script is TextMeshPro Component";
+        textComponet.color     = Color.blue;
+        textComponet.fontSize  = 36;
+        textComponet.fontStyle = FontStyles.Bold | FontStyles.Italic;
+    }
+}
+
+
+// Rich Text(서식 있는 Text) 지원 - HTML 유사. (Text Input에 적용.)
+
+<b> Font Style : B </b>
+<i> Font Style : I </i>
+<u> Font Style : U </u>
+<s> Font Style : S </s>
+<sup> 위 첨자 </sup>
+<sub> 아래 첨자 </sub>
+<size = 36> Font Size = 36 </size>
+<size = +36> Current Font Size 36 up </size>
+<size = -36> Current ont Size 36 down </size>
+<pos = 10> 왼쪽 기준으로 문자열 위치 10만큼 이동
+<color = blue> Font 색상을 blue로 설정 </color>
+<#000000> Font 색상을 black으로 설정 </color>
+...
+
+```
+
+- `TextMeshPro - Text` 는 기본적으로 영어(English) Font만을 지원하기에 한글 Font 등록이 필요.
+    - Prpject에 사용할 Font File을 Project/Assets 부분에 포함.(시간이 다소 걸릴 수 있음.)
+    - Font Asset 생성.(Window -> TextMeshPro -> Font Asset Creator)
+        - `[Font Asset Creator - Font Settings]`
+            - Source Font File : Font Asset으로 사용할 Font File 등록.
+            - Sampling Point Size : Atlas에 등록되는 Text 크기(Auto sizing / Custom size)
+            - Padding : Atlas에 등록되는 Text 사이의 거리.
+            - Packing Method : Atlas를 빠르게 생성할 것인지 최적할 것인지를 설정(Fast / Optimum)
+            - Atlas Resolution : 우리가 등록하는 Text를 저장하는 Atlas 크기.
+             (크기에 따라 용량이 설정되며, 크기가 너무 작을 경우 Text의 해상도가 낮게 설정됨.)
+            - Character Set : Atlas에 등록되는 Text 설정 방법.
+             (Custom Characters : Custom Character List에 입력한 Text 등록.)
+
+            - Save : 설정한 Font 저장.
+
+       - `[Render Mode]`
+            - RASTER : Hinting, Anti-Aliasing 모두 적용되지 않은 Rendering.
+            - SMOOTH : Anti-Aliasing이 적용된 Rendering.
+            (동적으로 사용할 때 Rendering이 가장 빠른 모드)
+
+            - RASTER_HINTED : Hinting이 적용된 Rendering.
+            (가장 선명한 글꼴 Rendering 옵션으로 Pixel 표현에 유리.)
+
+            - SMOOTH_HINTED : Hinting, Anti-Aliasing이 적용된 Rendering.
+            (문자가 커지거나 작아져도 라인이 부드럽게 연결.)
+
+            - SDF(Signed Distance Field) : Bitmap Font의 겨우 스케일 적용 시 흐려지거나 Anti-Aliasing 문제가 발생하는데, 이를 해결하기 위해 거리에 따라 선명도를 계산하여 보여주는 방식. Shader를 활용하여 Outline과 같은 추가 효과 구현이 가능하며, 작은 글자는 잘 안보이고 Bitmap처럼 전체 문자를 전부 바꾸면 용량이 커진다는 단점이 있기에 필요한 문장만을 추가해 나가는 것울 추천.
+
+            - **참고**
+                - Anti-Aliasing : 계단 현상을 개선하는 기술.
+                - Hinting : 글자 크기가 바뀌더라도 Hint를 참고해 모양을 변화시켜 Text를 뚜렷하게 보이도록 하는 기술.
+                
