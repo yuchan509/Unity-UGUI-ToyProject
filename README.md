@@ -6,8 +6,7 @@
   - 04. FileBrowser - Image Update / Save
 
 
-## Unity UI Manual
-
+## UGUI(Unity Graphic User Interface)
 
 - Unity에서 제공하는 Unity built - in UI (4.6 이후)
 - 추가 구매의 필요성이 없으며, 직관적인 UI 구성 요소 간의 Depth 조절이 가능.
