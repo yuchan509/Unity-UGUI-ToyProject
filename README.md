@@ -1,4 +1,4 @@
-# Unity-UGUI 
+# Unity - UGUI(Unity Graphic User Interface)
 ##  Toy Projects
   - 01. Drag and Drop with Duplication
   - 02. Iventory & Slot
@@ -8,7 +8,7 @@
 
 ## Unity UI Manual
 
-# UGUI(Unity Graphic User Interface)
+
 - Unity에서 제공하는 Unity built - in UI (4.6 이후)
 - 추가 구매의 필요성이 없으며, 직관적인 UI 구성 요소 간의 Depth 조절이 가능.
 - Canvas 단위로 Draqw cell이 관리되며, Sprite Atlas 관리(Folder 단위로도 가능)
